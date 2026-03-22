@@ -84,7 +84,7 @@ export function Navbar({ isDark, toggleTheme }: NavbarProps) {
             </motion.div>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-8">
+            <div className="hidden md:flex items-center gap-4 lg:gap-6">
               {navLinks.map((link, index) => (
                 <motion.button
                   key={link.id}
@@ -92,20 +92,17 @@ export function Navbar({ isDark, toggleTheme }: NavbarProps) {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
                   onClick={() => scrollToSection(link.id)}
-                  className={`relative px-4 py-2 font-medium text-sm transition-colors duration-300 ${
+                  className={`relative px-4 py-2 text-[12px] font-bold tracking-[0.15em] uppercase transition-all duration-300 border-2 group ${
                     activeSection === link.id
-                      ? 'text-foreground'
-                      : 'text-muted-foreground hover:text-foreground'
+                      ? 'text-white border-[#00c2ff]'
+                      : 'text-white/80 border-transparent hover:border-[#00c2ff] hover:text-white'
                   }`}
                 >
-                  <span className="relative z-10">{link.label}</span>
-                  {activeSection === link.id && (
-                    <motion.div
-                      layoutId="activeSection"
-                      className="absolute inset-0 bg-white/10 dark:bg-white/5 rounded-lg border border-white/20 dark:border-white/10 shadow-[0_4px_12px_rgba(168,85,247,0.1)]"
-                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                    />
-                  )}
+                  <span className="relative z-10 block pb-1">{link.label}</span>
+                  {/* Underline */}
+                  <div className={`absolute bottom-2 left-4 right-4 h-[1px] bg-white transition-opacity duration-300 ${
+                    activeSection === link.id ? 'opacity-100' : 'opacity-100'
+                  }`} />
                 </motion.button>
               ))}
 
