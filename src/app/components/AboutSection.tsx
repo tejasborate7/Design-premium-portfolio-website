@@ -1,110 +1,181 @@
 import { motion } from 'motion/react';
 import { useInView } from 'motion/react';
 import { useRef } from 'react';
+import { ArrowUpRight } from 'lucide-react';
 
 export function AboutSection() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
-
-  const skills = [
-    { name: 'Figma', level: 95 },
-    { name: 'Photoshop', level: 85 },
-    { name: 'Illustrator', level: 80 },
-  ];
+  const isInView = useInView(ref, { once: true, margin: '-80px' });
 
   return (
-    <section id="about" className="py-16 sm:py-24 relative overflow-hidden">
-      {/* Background Depth layer */}
-      <div className="absolute inset-0 -z-10 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
-      <div className="absolute top-[20%] right-[-10%] w-[30vw] h-[30vw] bg-indigo-500/5 rounded-full blur-[100px] -z-10" />
-      <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-purple-500/5 rounded-full blur-[120px] -z-10" />
-
-      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
-        {/* About Me Badge */}
-        <div className="flex justify-center mb-10 sm:mb-12">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.3 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/50 dark:bg-black/50 backdrop-blur-md border border-purple-500/20 shadow-[0_4px_15px_rgba(168,85,247,0.05)]"
+    <section
+      id="about"
+      ref={ref}
+      className="relative bg-[#0d0d0d] min-h-screen"
+      style={{ fontFamily: "'Inter', 'Helvetica Neue', sans-serif" }}
+    >
+      {/* Breadcrumb */}
+      <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 pt-8 pb-0">
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5 }}
+          className="flex items-center gap-2 text-sm text-white/50"
+        >
+          <span
+            className="hover:text-white/80 cursor-pointer transition-colors"
+            onClick={() => {
+              const el = document.getElementById('home');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }}
           >
-            <div className="w-2 h-2 rounded-full bg-purple-500 animate-pulse" />
-            <span className="text-sm font-semibold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
-              About Me
-            </span>
+            Home
+          </span>
+          <span className="text-white/30">|</span>
+          <span className="text-white/80">Portfolio</span>
+        </motion.div>
+      </div>
+
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 py-12 lg:py-16">
+
+        {/* Page Title */}
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7, delay: 0.1 }}
+          className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-12 lg:mb-16 tracking-tight"
+        >
+          Tarun Keswani
+        </motion.h1>
+
+        {/* Two-column layout: image left, content right */}
+        <div className="grid grid-cols-1 lg:grid-cols-[350px_1fr] gap-10 lg:gap-16 items-start">
+
+          {/* Left: Profile Image */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="relative"
+          >
+            <div
+              className="relative overflow-hidden rounded-sm"
+              style={{ aspectRatio: '3/4', maxWidth: '350px' }}
+            >
+              <img
+                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                alt="Tarun Keswani"
+                className="w-full h-full object-cover"
+                style={{ filter: 'grayscale(100%) contrast(1.05) brightness(0.9)' }}
+              />
+              {/* subtle vignette */}
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background:
+                    'radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.45) 100%)',
+                }}
+              />
+            </div>
+          </motion.div>
+
+          {/* Right: Content */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.7, delay: 0.3 }}
+            className="flex flex-col gap-6"
+          >
+            {/* Who i am? */}
+            <div className="flex items-center gap-3">
+              <span
+                className="text-2xl font-bold"
+                style={{ color: '#c8e600', lineHeight: 1 }}
+              >
+                *
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
+                Who i am?
+              </h2>
+            </div>
+
+            {/* Role + Arrow Button */}
+            <div className="flex items-start justify-between gap-4">
+              <h3 className="text-2xl sm:text-3xl font-bold text-white leading-snug max-w-[480px]">
+                Motion Designer, Video Editor &amp;{' '}
+                Content Creator.
+              </h3>
+              <a
+                href="#contact"
+                onClick={(e) => {
+                  e.preventDefault();
+                  const el = document.getElementById('contact');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="flex-shrink-0 flex items-center justify-center rounded-full transition-transform hover:scale-110 active:scale-95"
+                style={{
+                  width: '52px',
+                  height: '52px',
+                  background: '#e84d2b',
+                  marginTop: '4px',
+                }}
+                aria-label="Contact"
+              >
+                <ArrowUpRight className="w-6 h-6 text-white" strokeWidth={2.5} />
+              </a>
+            </div>
+
+            {/* Short bio paragraph */}
+            <p
+              className="text-base leading-relaxed"
+              style={{ color: 'rgba(255,255,255,0.72)', maxWidth: '600px' }}
+            >
+              I turn creative chaos into structured storytelling, the kind that makes people stop
+              scrolling. For me, design isn't just visual; it's emotional strategy disguised as art.
+              From leading ad campaigns for TATA Capital, Croma, and Odoo to creating UGC-style
+              videos that bring brands closer to people. I live for that moment when an idea goes
+              from concept to connection, when pixels start speaking, colors carry intent, and a
+              video becomes a story worth watching twice.
+            </p>
+
+            {/* Divider */}
+            <div className="w-full h-px bg-white/10 my-2" />
+
+            {/* Long bio paragraph */}
+            <p
+              className="text-base leading-relaxed"
+              style={{ color: 'rgba(255,255,255,0.72)' }}
+            >
+              Every idea begins with a beat, a rhythm I've been chasing since the day I first spoke
+              into a microphone. Before stepping behind the design desk, I was a voiceover artist,
+              learning how tone, silence, and storytelling could move people. That experience still
+              echoes in my work; only now, I speak through visuals, motion, and design. Through
+              Tarun Creates, my personal creative label, I shape stories that perform, blending
+              strategy with spontaneity, design with direction, and emotion with execution. My work
+              spans motion design, branding, animation, and on-camera presentation, all stitched
+              together by one simple idea: make it memorable. With a strong foundation in Adobe
+              Creative Suite and AI-powered design tools, I create visuals that don't just look good
+              but communicate with purpose. My creative journey has been recognized through honors
+              like the Creative Catalyst Award (2025), Amaze Festival Winner (2023), and a proud
+              moment as a Cortokino 2025 Jury Member, where I evaluated animation films by emerging
+              creators. Over the years, I've mentored students and conducted workshops on animation,
+              storytelling, and performance in front of the camera, sharing insights that merge art,
+              emotion, and technology. Today, I'm a designer who directs, a presenter who performs,
+              and a storyteller who still talks to timelines, because some creative habits are too
+              good to let go. At heart, my goal remains simple: to make creativity not just seen,
+              but felt, one frame at a time.
+            </p>
           </motion.div>
         </div>
+      </div>
 
-        <motion.div
-          ref={ref}
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-          className="bg-white dark:bg-[#0A0A0A] rounded-[2rem] sm:rounded-[3rem] p-5 sm:p-10 lg:p-16 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none border border-gray-100 dark:border-white/5"
-        >
-          <div className="grid lg:grid-cols-[4fr_6fr] gap-8 lg:gap-16 items-center">
-            
-            {/* Left - Image */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={isInView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              <div className="relative rounded-[2rem] overflow-hidden aspect-square bg-muted mx-auto max-w-[260px] sm:max-w-sm lg:max-w-none">
-                <img
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                  alt="The Digital Curator"
-                  className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500 ease-in-out cursor-pointer"
-                />
-              </div>
-            </motion.div>
-
-            {/* Right - Content */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={isInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.3 }}
-            >
-              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground mb-4 sm:mb-6 leading-tight">
-                The Digital Curator
-              </h2>
-              
-              <div className="text-muted-foreground text-sm sm:text-lg leading-relaxed mb-7 sm:mb-10">
-                <p>
-                  I specialize in creating high-end digital aesthetics that bridge the gap between art
-                  and utility. My approach is rooted in structural minimalism and atmospheric depth,
-                  ensuring every pixel serves a purpose in the narrative.
-                </p>
-              </div>
-
-              {/* Skills — always 3 equal columns */}
-              <div className="grid grid-cols-3 gap-3 sm:gap-4">
-                {skills.map((skill, index) => (
-                  <motion.div
-                    key={skill.name}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={isInView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ delay: 0.5 + index * 0.1 }}
-                    className="border border-gray-100 dark:border-white/10 rounded-2xl px-3 sm:px-6 py-3 sm:py-4 bg-white dark:bg-transparent shadow-sm dark:shadow-none min-w-0"
-                  >
-                    <span className="block text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-[#4f46e5] dark:text-[#6366f1] mb-2 truncate">
-                      {skill.name}
-                    </span>
-                    <div className="h-1.5 w-full bg-indigo-50 dark:bg-white/10 rounded-full overflow-hidden">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        animate={isInView ? { width: `${skill.level}%` } : {}}
-                        transition={{ duration: 1.5, delay: 0.7 + index * 0.1, ease: 'easeOut' }}
-                        className="h-full bg-[#4f46e5] dark:bg-[#6366f1] rounded-full"
-                      />
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-
-          </div>
-        </motion.div>
+      {/* Footer line */}
+      <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 pb-10">
+        <div className="w-full h-px bg-white/10" />
+        <div className="flex justify-end pt-4">
+          <span className="text-sm text-white/40">All rights reserved</span>
+        </div>
       </div>
     </section>
   );

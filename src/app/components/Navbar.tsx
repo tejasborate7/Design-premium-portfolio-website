@@ -1,16 +1,19 @@
 import { useState, useEffect } from 'react';
 import { Moon, Sun, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { useNavigate } from 'react-router';
 
 interface NavbarProps {
   isDark: boolean;
   toggleTheme: () => void;
+  isAboutPage?: boolean;
 }
 
-export function Navbar({ isDark, toggleTheme }: NavbarProps) {
-  const [activeSection, setActiveSection] = useState('home');
+export function Navbar({ isDark, toggleTheme, isAboutPage = false }: NavbarProps) {
+  const [activeSection, setActiveSection] = useState(isAboutPage ? 'about' : 'home');
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const navLinks = [
     { id: 'home', label: 'Home' },
@@ -43,18 +46,34 @@ export function Navbar({ isDark, toggleTheme }: NavbarProps) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToSection = (id: string) => {
+  const handleNavClick = (id: string) => {
+    setIsMobileMenuOpen(false);
+    if (id === 'about') {
+      // Always navigate to the /about page
+      navigate('/about');
+      return;
+    }
+    if (isAboutPage) {
+      // On about page, go home then scroll
+      navigate('/');
+      // Scroll after navigation
+      setTimeout(() => {
+        const element = document.getElementById(id);
+        if (element) {
+          const offset = 80;
+          const elementPosition = element.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - offset;
+          window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+        }
+      }, 300);
+      return;
+    }
     const element = document.getElementById(id);
     if (element) {
       const offset = 80;
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth',
-      });
-      setIsMobileMenuOpen(false);
+      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
     }
   };
 
@@ -76,7 +95,7 @@ export function Navbar({ isDark, toggleTheme }: NavbarProps) {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               className="cursor-pointer flex items-center gap-2"
-              onClick={() => scrollToSection('home')}
+              onClick={() => handleNavClick('home')}
             >
               <span className="text-lg sm:text-xl font-semibold tracking-tight">
                 Saurabh Kanade
@@ -91,7 +110,7 @@ export function Navbar({ isDark, toggleTheme }: NavbarProps) {
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  onClick={() => scrollToSection(link.id)}
+                  onClick={() => handleNavClick(link.id)}
                   className={`relative px-4 py-2 text-[12px] font-bold tracking-[0.15em] uppercase transition-all duration-300 border-2 group ${
                     activeSection === link.id
                       ? 'text-white border-[#00c2ff]'
@@ -100,9 +119,7 @@ export function Navbar({ isDark, toggleTheme }: NavbarProps) {
                 >
                   <span className="relative z-10 block pb-1">{link.label}</span>
                   {/* Underline */}
-                  <div className={`absolute bottom-2 left-4 right-4 h-[1px] bg-white transition-opacity duration-300 ${
-                    activeSection === link.id ? 'opacity-100' : 'opacity-100'
-                  }`} />
+                  <div className="absolute bottom-2 left-4 right-4 h-[1px] bg-white opacity-100" />
                 </motion.button>
               ))}
 
@@ -158,7 +175,7 @@ export function Navbar({ isDark, toggleTheme }: NavbarProps) {
                   key={link.id}
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  onClick={() => scrollToSection(link.id)}
+                  onClick={() => handleNavClick(link.id)}
                   className={`text-left px-6 py-4 rounded-2xl transition-all font-medium ${
                     activeSection === link.id
                       ? 'bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-cyan-500/10 border border-purple-500/20 text-foreground'
